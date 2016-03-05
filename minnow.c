@@ -33,7 +33,7 @@ static struct i2c_client *client;
 
 static int __init minnow_module_init(void)
 {
-	adap = i2c_get_adapter(0);
+	adap = i2c_get_adapter(7);
 
 	client = i2c_new_device(adap, board_info);
 

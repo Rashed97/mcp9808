@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
+#include <unistd.h>
 
 void convert_to_temp(unsigned short temp);
 

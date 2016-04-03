@@ -5,3 +5,7 @@ all:
 
 clean:
 	make -C /lib/modules/$(shell uname -r)/build/ M=$(PWD) clean
+
+install:
+	cp mcp9808.ko /lib/modules/$(shell uname -r)/kernel/drivers/
+	cp minnow.ko /lib/modules/$(shell uname -r)/kernel/drivers/

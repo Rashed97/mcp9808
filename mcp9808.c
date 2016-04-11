@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2015, The Linux Foundation. All rights reserved.
  * Copyright (c) 2015, Alex Deddo <adeddo27@gmail.com>
+ * Copyright (c) 2016, Rashed Abdel-Tawab <rashed@linux.com>
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -44,7 +45,8 @@
 #define MCP_REG_RES    0x08
 
 #define MCP_VENDOR 0x0054
-#define MCP_DEVICE 0x0400
+#define MCP_DEVICE_MCP9804 0x0201
+#define MCP_DEVICE_MCP9808 0x0400
 
 enum {
 	MCP_RES_MIN = 0,
@@ -130,7 +132,7 @@ static int mcp9808_verify_chip(struct mcp9808_data *mcpd)
 		return -EIO;
 
 	response = (buf[0] << 8) | buf[1];
-	if (response != MCP_DEVICE) {
+	if ((response != MCP_DEVICE_MCP9804) || (response != MCP_DEVICE_MCP9808)) {
 		pr_err("invalid device response: 0x%04x\n", response);
 		return -EINVAL;
 	}
@@ -412,12 +414,14 @@ static int mcp9808_remove(struct i2c_client *client)
 }
 
 static struct i2c_device_id mcp9808_id_table[] = {
-	{ "mcp9808", 0 },
+	{ "mcp9804", 0 },
+	{ "mcp9808", 1 },
 	{},
 };
 MODULE_DEVICE_TABLE(i2c, mcp9808_id_table);
 
 static struct of_device_id mcp9808_match_table[] = {
+	{ .compatible = "microchip,mcp9804", },
 	{ .compatible = "microchip,mcp9808", },
 	{},
 };
@@ -450,5 +454,5 @@ module_init(mcp9808_init);
 module_exit(mcp9808_exit);
 
 MODULE_AUTHOR("Alex Deddo");
-MODULE_DESCRIPTION("Microchip MCP9808 I2C Temperature Sensor");
+MODULE_DESCRIPTION("Microchip MCP980x I2C Temperature Sensor");
 MODULE_LICENSE("GPL");
